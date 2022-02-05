@@ -64,7 +64,7 @@ class _DetailsPageState extends State<DetailsPage> {
         body: ListView(children: [
           Stack(children: [
             Container(
-                height: MediaQuery.of(context).size.height + 200,
+                height: MediaQuery.of(context).size.height + 250,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.transparent),
             Positioned(
@@ -76,7 +76,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           topRight: Radius.circular(45.0),
                         ),
                         color: Colors.white),
-                    height: MediaQuery.of(context).size.height + 200,
+                    height: MediaQuery.of(context).size.height + 250,
                     width: MediaQuery.of(context).size.width)),
             Positioned(
                 top: 30.0,

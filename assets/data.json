@@ -1,7 +1,7 @@
 [
     {
         "id": 0,
-        "name": "Spicy Honey-Chipotle Salmon Bowl",
+        "name": "Salmon Bowl",
         "imgPath": "assets/plate1.png",
         "price": "24.00",
         "weight": "800",
@@ -57,7 +57,7 @@
     },
     {
         "id": 2,
-        "name": "Pan-Seared Foie Gras",
+        "name": "Pan-Seared",
         "imgPath": "assets/plate3.png",
         "price": "24.00",
         "weight": "800",
@@ -85,7 +85,7 @@
     },
     {
         "id": 3,
-        "name": "Caprese Salad with Balsamic",
+        "name": "Caprese Salad",
         "imgPath": "assets/plate4.png",
         "price": "24.00",
         "weight": "800",
@@ -113,7 +113,7 @@
     },
     {
         "id": 4,
-        "name": "Simply perfect classic waffles",
+        "name": "Waffles",
         "imgPath": "assets/plate5.png",
         "price": "24.00",
         "weight": "800",

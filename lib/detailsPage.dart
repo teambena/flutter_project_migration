@@ -3,15 +3,16 @@ import 'dart:convert';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/services.dart';
-
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DetailsPage extends StatefulWidget {
   final id;
   final heroTag;
   final foodName;
   final foodPrice;
+  final videoId;
 
-  DetailsPage({this.id, this.heroTag, this.foodName, this.foodPrice});
+  DetailsPage({this.id, this.heroTag, this.foodName, this.foodPrice, this.videoId});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -35,8 +36,14 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    YoutubePlayerController _controller = YoutubePlayerController (
+        initialVideoId:  data[widget.id]['videoId'],
+        flags: YoutubePlayerFlags(
+          autoPlay: true,
+          mute: true,
+        ));
     return Scaffold(
-        backgroundColor: Color(0xFF7A9BEE),
+        backgroundColor: Color(0xFF474973),
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -53,18 +60,11 @@ class _DetailsPageState extends State<DetailsPage> {
                   fontSize: 18.0,
                   color: Colors.white)),
           centerTitle: true,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.more_horiz),
-              onPressed: () {},
-              color: Colors.white,
-            )
-          ],
         ),
         body: ListView(children: [
           Stack(children: [
             Container(
-                height: MediaQuery.of(context).size.height - 82.0,
+                height: MediaQuery.of(context).size.height + 200,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.transparent),
             Positioned(
@@ -76,7 +76,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           topRight: Radius.circular(45.0),
                         ),
                         color: Colors.white),
-                    height: MediaQuery.of(context).size.height - 100.0,
+                    height: MediaQuery.of(context).size.height + 200,
                     width: MediaQuery.of(context).size.width)),
             Positioned(
                 top: 30.0,
@@ -105,65 +105,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     SizedBox(height: 20.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(widget.foodPrice,
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 20.0,
-                                color: Colors.grey)),
-                        Container(height: 25.0, color: Colors.grey, width: 1.0),
-                        Container(
-                          width: 125.0,
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(17.0),
-                              color: Color(0xFF7A9BEE)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  height: 25.0,
-                                  width: 25.0,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(7.0),
-                                      color: Color(0xFF7A9BEE)),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.remove,
-                                      color: Colors.white,
-                                      size: 20.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Text('2',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 15.0)),
-                              InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  height: 25.0,
-                                  width: 25.0,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(7.0),
-                                      color: Colors.white),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.add,
-                                      color: Color(0xFF7A9BEE),
-                                      size: 20.0,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+                      children: <Widget>[],
                     ),
                     SizedBox(height: 20.0),
                     Container(
@@ -171,36 +113,135 @@ class _DetailsPageState extends State<DetailsPage> {
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: <Widget>[
-                            _buildInfoCard('WEIGHT', data[widget.id]['weight'], 'G'),
+                            _buildInfoCard(
+                                'CALORIES', data[widget.id]['calories'], 'CAL'),
                             SizedBox(width: 10.0),
-                            _buildInfoCard('CALORIES', data[widget.id]['calories'], 'CAL'),
+                            _buildInfoCard(
+                                'PREP', data[widget.id]['prep'], 'Mins'),
                             SizedBox(width: 10.0),
-                            _buildInfoCard('VITAMINS', data[widget.id]['vitamins'], 'VIT'),
+                            _buildInfoCard(
+                                'COOK', data[widget.id]['cook'], 'Mins'),
                             SizedBox(width: 10.0),
-                            _buildInfoCard('AVAIL', data[widget.id]['avail'], 'AV')
+                            _buildInfoCard(
+                                'TOTAL', data[widget.id]['total'], 'Hrs'),
+                            SizedBox(width: 10.0),
+                            _buildInfoCard(
+                                'SERVINGS', data[widget.id]['servings'], ''),
                           ],
-                        )
-                    ),
+                        )),
+                    SizedBox(height: 40.0),
+                    Text('Ingredients',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold)),
                     SizedBox(height: 20.0),
-                    Padding(
-                      padding: EdgeInsets.only(bottom:5.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0), bottomLeft: Radius.circular(25.0), bottomRight: Radius.circular(25.0)),
-                            color: Colors.black
-                        ),
-                        height: 50.0,
-                        child: Center(
-                          child: Text(
-                              '\$52.00',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Montserrat'
-                              )
-                          ),
-                        ),
-                      ),
-                    )
+                    Container(
+                        height: 150.0,
+                        child: ListView(
+                          scrollDirection: Axis.vertical,
+                          children: <Widget>[
+                            // CheckboxListTile(
+                            //   title: Text(
+                            //     data[widget.id]['ingredients']['1'],
+                            //   ),
+                            //   value: this.value1,
+                            //   onChanged: (bool value1) {
+                            //     setState(() {
+                            //       this.value1 = value1;
+                            //     });
+                            //   },
+                            //   controlAffinity: ListTileControlAffinity
+                            //       .leading, //  <-- leading Checkbox
+                            // ),
+                            // IconButton
+                            Text(
+                              data[widget.id]['ingredients']['1'],
+                            ),
+                            Text(""),
+                            // SizedBox(width: 40.0),
+                            // CheckboxListTile(
+                            //   title: Text(
+                            //     data[widget.id]['ingredients']['2'],
+                            //   ),
+                            //   value: this.value2,
+                            //   onChanged: (bool value2) {
+                            //     setState(() {
+                            //       this.value2 = value2;
+                            //     });
+                            //   },
+                            //   controlAffinity: ListTileControlAffinity
+                            //       .leading, //  <-- leading Checkbox
+                            // ),
+                            Text(
+                              data[widget.id]['ingredients']['2'],
+                            ),
+                            Text(""),
+
+                            Text(
+                              data[widget.id]['ingredients']['3'],
+                            ),
+                            Text(""),
+
+                            Text(
+                              data[widget.id]['ingredients']['4'],
+                            ),
+                            Text(""),
+
+                            Text(
+                              data[widget.id]['ingredients']['5'],
+                            ),
+                            Text(""),
+                            Text(
+                              data[widget.id]['ingredients']['6'],
+                            ),
+                            Text(""),
+                            Text(
+                              data[widget.id]['ingredients']['7'],
+                            ),
+                            Text(""),
+                            Text(
+                              data[widget.id]['ingredients']['8'],
+                            ),
+                            Text(""),
+                            Text(
+                              data[widget.id]['ingredients']['9'],
+                            ),
+                            Text(""),
+                            Text(
+                              data[widget.id]['ingredients']['10'],
+                            ),
+                            Text(""),
+                            Text(
+                              data[widget.id]['ingredients']['11'],
+                            ),
+                            Text(""),
+                            Text(
+                              data[widget.id]['ingredients']['12'],
+                            ),
+                            Text(""),
+                            Text(
+                              data[widget.id]['ingredients']['13'],
+                            ),
+                            Text(""),
+                            SizedBox(width: 10.0),
+                          ],
+                        )),
+                    SizedBox(height: 40.0),
+
+                    //--------------Video------------------
+                    Text('Video',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(height: 40.0),
+                    YoutubePlayer(
+                      controller: _controller,
+                      showVideoProgressIndicator: true,
+                      progressIndicatorColor: Colors.blueAccent,
+                    ),
+
                   ],
                 ))
           ])
@@ -217,15 +258,14 @@ class _DetailsPageState extends State<DetailsPage> {
             curve: Curves.easeIn,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              color: cardTitle == selectedCard ? Color(0xFF7A9BEE) : Colors.white,
+              color:
+              cardTitle == selectedCard ? Color(0xFF7A9BEE) : Colors.white,
               border: Border.all(
-                  color: cardTitle == selectedCard ?
-                  Colors.transparent :
-                  Colors.grey.withOpacity(0.3),
+                  color: cardTitle == selectedCard
+                      ? Colors.transparent
+                      : Colors.grey.withOpacity(0.3),
                   style: BorderStyle.solid,
-                  width: 0.75
-              ),
-
+                  width: 0.75),
             ),
             height: 100.0,
             width: 100.0,
@@ -239,8 +279,9 @@ class _DetailsPageState extends State<DetailsPage> {
                         style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 12.0,
-                          color:
-                          cardTitle == selectedCard ? Colors.white : Colors.grey.withOpacity(0.7),
+                          color: cardTitle == selectedCard
+                              ? Colors.white
+                              : Colors.grey.withOpacity(0.7),
                         )),
                   ),
                   Padding(
@@ -267,15 +308,23 @@ class _DetailsPageState extends State<DetailsPage> {
                       ],
                     ),
                   )
-                ]
-            )
-        )
-    );
+                ])));
   }
 
   selectCard(cardTitle) {
     setState(() {
       selectedCard = cardTitle;
     });
+  }
+
+  BoxDecoration myBoxDecoration() {
+    return BoxDecoration(
+      border: Border.all(
+        color: Colors.grey.withOpacity(0.3),
+        width: 0.75,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.circular(16.0),
+    );
   }
 }

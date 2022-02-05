@@ -1,0 +1,22 @@
+[
+    {
+        "id": 0,
+        "name": "Test Salmon bowl",
+        "imgPath": "assets/plate1.png",
+        "price": "24.00",
+        "weight": "800",
+        "calories": "267",
+        "vitamins": "A",
+        "avail": "No"
+    },
+    {
+        "id": 1,
+        "name": "Test Spring bowl",
+        "imgPath": "assets/plate2.png",
+        "price": "22.00",
+        "weight": "150",
+        "calories": "225",
+        "vitamins": "A, B6",
+        "avail": "No"
+    }
+]

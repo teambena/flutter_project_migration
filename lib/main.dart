@@ -113,8 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   return _buildFoodItem(
                                       data[index]['id'],
                                       data[index]['imgPath'],
-                                      data[index]['name'],
-                                      data[index]['price']);
+                                      data[index]['name']);
                                 },
                                 itemCount: data.length,
                               );
@@ -136,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildFoodItem(int id, String imgPath, String foodName, String price) {
+  Widget _buildFoodItem(int id, String imgPath, String foodName) {
     final alreadySaved = _saved.contains(foodName);
 
     return Padding(
@@ -147,8 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (context) => DetailsPage(
                     id: id,
                     heroTag: imgPath,
-                    foodName: foodName,
-                    foodPrice: price)));
+                    foodName: foodName)));
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,7 +200,9 @@ class _MyHomePageState extends State<MyHomePage> {
       return Scaffold(
           appBar: AppBar(
               backgroundColor: Colors.amber[800], title: Text('Favorite Menu')),
-          body: ListView(children: divided));
+          body: ListView(
+              children: divided, )
+      );
     }));
   }
 

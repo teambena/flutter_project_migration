@@ -8,11 +8,8 @@ import 'package:youtube_parser/youtube_parser.dart';
 
 class DetailsPage extends StatefulWidget {
   final id;
-  final heroTag;
-  final foodName;
-  final videoId;
 
-  DetailsPage({this.id, this.heroTag, this.foodName, this.videoId});
+  DetailsPage({this.id});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -84,11 +81,11 @@ class _DetailsPageState extends State<DetailsPage> {
                 top: 30.0,
                 left: (MediaQuery.of(context).size.width / 2) - 100.0,
                 child: Hero(
-                    tag: widget.heroTag,
+                    tag: data[widget.id]['imgPath'],
                     child: Container(
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage(widget.heroTag),
+                                image: AssetImage(data[widget.id]['imgPath']),
                                 fit: BoxFit.cover)),
                         height: 200.0,
                         width: 200.0))),
@@ -99,7 +96,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(widget.foodName,
+                    Text(data[widget.id]['name'],
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 22.0,

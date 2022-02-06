@@ -25,10 +25,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _saved = Set<String>();
+
+  late List data;
+
+  Future<void> loadJsonData() async {
+    var jsonText = await rootBundle.loadString('assets/data.json');
+    setState(() => data = json.decode(jsonText));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.loadJsonData();
+  }
+
+  final _saved = Set<int>();
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFFFFFF),
@@ -136,7 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildFoodItem(int id, String imgPath, String foodName) {
-    final alreadySaved = _saved.contains(foodName);
+    final alreadySaved = _saved.contains(id);
+
 
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
@@ -174,9 +191,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     setState(() {
                       if (alreadySaved) {
-                        _saved.remove(foodName);
+                        _saved.remove(id);
                       } else {
-                        _saved.add(foodName);
+                        _saved.add(id);
                       }
                     });
                   })
@@ -188,12 +205,21 @@ class _MyHomePageState extends State<MyHomePage> {
   void _pushSaved() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
-      final tiles = _saved.map((String foodName) {
-        return ListTile(title: Text(foodName, style: TextStyle(fontSize: 16)));
+
+      final tiles = _saved.map((int id) {
+
+          return ListTile(
+              title: Text(data[id]['name'], style: TextStyle(fontSize: 16)),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => DetailsPage(
+                        id: id)));
+              },);
+
       });
 
       final divided =
-      ListTile.divideTiles(context: context, tiles: tiles).toList();
+      ListTile.divideTiles(context: context, tiles: tiles,).toList();
 
       return Scaffold(
           appBar: AppBar(

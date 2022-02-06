@@ -170,6 +170,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  youtube_parser:
+    dependency: "direct dev"
+    description:
+      name: youtube_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   youtube_player_flutter:
     dependency: "direct dev"
     description:

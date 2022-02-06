@@ -4,6 +4,7 @@ import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/services.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_parser/youtube_parser.dart';
 
 class DetailsPage extends StatefulWidget {
   final id;
@@ -36,8 +37,10 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    String? extractYoutubeId = getIdFromUrl(data[widget.id]['videoId']);
+    String getYoutubeId = extractYoutubeId!;
     YoutubePlayerController _controller = YoutubePlayerController (
-        initialVideoId:  data[widget.id]['videoId'],
+        initialVideoId:  getYoutubeId,
         flags: YoutubePlayerFlags(
           autoPlay: true,
           mute: true,

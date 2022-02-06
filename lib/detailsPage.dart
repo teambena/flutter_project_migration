@@ -10,10 +10,9 @@ class DetailsPage extends StatefulWidget {
   final id;
   final heroTag;
   final foodName;
-  final foodPrice;
   final videoId;
 
-  DetailsPage({this.id, this.heroTag, this.foodName, this.foodPrice, this.videoId});
+  DetailsPage({this.id, this.heroTag, this.foodName, this.videoId});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
